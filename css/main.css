@@ -41,3 +41,25 @@ body {
 	width: 100%;
 	display: block;
 }
+
+.container {
+	text-align: center;
+}
+
+.TVButton {
+	text-align: center;
+}
+
+.container-button-TV {
+	margin: 10px auto 0 auto;
+	width: 95%;
+	display: inline-block;
+	padding: 20px;
+	background-color: green;
+	color: white;
+	font-size: 16px;
+	font-family: Helvetica, sans-serif;
+
+	border: 1px solid green;
+	border-radius: 5px;
+}

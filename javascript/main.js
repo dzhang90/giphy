@@ -3,10 +3,13 @@
 var keyword;
 var inputBar;
 var goButton;
+var tvButton;
 var mainContainer;
+var tvtime = [];
 
 inputBar = document.querySelector("input.js-userinput");
 goButton = document.querySelector("button.js-go");
+tvButton = document.querySelector("button.js-tv");
 mainContainer = document.querySelector("div.js-container");
 
 /* 1. Grab the input */
@@ -14,6 +17,7 @@ mainContainer = document.querySelector("div.js-container");
 
 inputBar.addEventListener("keyup", pressEnter);
 goButton.addEventListener("click", pressButton);
+tvButton.addEventListener("click", pressTVButton);
 
 function pressEnter (e) {
 	
@@ -26,14 +30,41 @@ function pressEnter (e) {
 function pressButton () {
 	keyword = inputBar.value;
 	clearContainer();
+	stopTimer();
+	
+	var test = callAPI(keyword);
 	callAPI (keyword);
+}
+
+function pressTVButton () {
+	keyword = inputBar.value;
+	clearContainer();
+	stopTimer();
+	
+	var test = callAPI(keyword);
+	callAPITV (keyword);
 }
 
 /* 2. do the data stuff with the API */
 
 function callAPI (keyword) {
 	var replacedKeyword = keyword.replace (/ /g, "+");
-	console.log(replacedKeyword);
+
+	var url = "https://api.giphy.com/v1/gifs/search?q="+replacedKeyword+"&api_key=KTd7v1IMEny3trJNUogMzmiGVsykxksY";
+	
+	// AJAX request
+	var GiphyAJAXCall = new XMLHttpRequest();
+	GiphyAJAXCall.open ("GET", url);
+	GiphyAJAXCall.send ();
+
+	GiphyAJAXCall.addEventListener("load", function (e) {
+		var data = e.target.response;
+		pushToDOM(data);
+	});
+}
+
+function callAPITV (keyword) {
+	var replacedKeyword = keyword.replace (/ /g, "+");
 
 	var url = "https://api.giphy.com/v1/gifs/search?q="+replacedKeyword+"&api_key=KTd7v1IMEny3trJNUogMzmiGVsykxksY";
 	
@@ -46,7 +77,6 @@ function callAPI (keyword) {
 		var data = e.target.response;
 		pushTVToDOM(data);
 	});
-
 }
 
 
@@ -73,6 +103,14 @@ function clearContainer () {
 	}
 }
 
+function stopTimer () {
+	if (tvtime != null) {
+
+		for (i = 0; i < tvtime.length; i++) {
+			clearTimeout(tvtime[i]);
+		}
+	}
+}
 
 function pushToDOMAlt (value) {
 	var response = JSON.parse(value);
@@ -84,7 +122,6 @@ function pushToDOMAlt (value) {
 	
 }
 
-
 function pushTVToDOM (value) {
 	var response = JSON.parse(value);
 	var currentImage = document.createElement("IMG");
@@ -92,7 +129,7 @@ function pushTVToDOM (value) {
 
 	for (let i = 0; i < response.data.length; i++) {		
 		
-		setTimeout (function () {
+		tvtime[i] = setTimeout (function () {
 			clearContainer();
 			var imageURL = response.data[i].images.fixed_height.url;
 			console.log(i);
