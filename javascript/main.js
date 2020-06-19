@@ -35,7 +35,7 @@ function callAPI (keyword) {
 	var replacedKeyword = keyword.replace (/ /g, "+");
 	console.log(replacedKeyword);
 
-	var url = "http://api.giphy.com/v1/gifs/search?q="+replacedKeyword+"&api_key=KTd7v1IMEny3trJNUogMzmiGVsykxksY";
+	var url = "https://api.giphy.com/v1/gifs/search?q="+replacedKeyword+"&api_key=KTd7v1IMEny3trJNUogMzmiGVsykxksY";
 	
 	// AJAX request
 	var GiphyAJAXCall = new XMLHttpRequest();
